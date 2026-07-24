@@ -68,6 +68,9 @@ impl Collector {
         let mut flat_processes = Vec::new();
 
         for (pid, process) in self.sys.processes() {
+            if process.thread_kind().is_some() {
+                continue;
+            }
             let pid_u32 = pid.as_u32();
             let ppid_u32 = process.parent().map(|p| p.as_u32()).unwrap_or(0);
 

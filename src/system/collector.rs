@@ -35,7 +35,7 @@ impl Collector {
         sys.refresh_processes_specifics(
             ProcessesToUpdate::All,
             true,
-            ProcessRefreshKind::everything(),
+            ProcessRefreshKind::everything().without_tasks(),
         );
         Collector { sys }
     }
@@ -53,7 +53,7 @@ impl Collector {
         self.sys.refresh_processes_specifics(
             ProcessesToUpdate::All,
             true,
-            ProcessRefreshKind::nothing().with_memory().with_cpu(),
+            ProcessRefreshKind::nothing().with_memory().with_cpu().without_tasks(),
         );
         self.build_snapshot()
     }
@@ -68,9 +68,6 @@ impl Collector {
         let mut flat_processes = Vec::new();
 
         for (pid, process) in self.sys.processes() {
-            if process.thread_kind().is_some() {
-                continue;
-            }
             let pid_u32 = pid.as_u32();
             let ppid_u32 = process.parent().map(|p| p.as_u32()).unwrap_or(0);
 

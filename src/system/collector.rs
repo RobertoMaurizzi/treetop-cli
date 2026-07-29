@@ -53,7 +53,10 @@ impl Collector {
         self.sys.refresh_processes_specifics(
             ProcessesToUpdate::All,
             true,
-            ProcessRefreshKind::nothing().with_memory().with_cpu().without_tasks(),
+            ProcessRefreshKind::nothing()
+                .with_memory()
+                .with_cpu()
+                .without_tasks(),
         );
         self.build_snapshot()
     }
